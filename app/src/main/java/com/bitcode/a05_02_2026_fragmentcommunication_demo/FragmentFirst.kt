@@ -4,20 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.bitcode.a05_02_2026_fragmentcommunication_demo.databinding.FragmentFirstBinding
 
 class FragmentFirst : Fragment() {
-    private lateinit var fragmentFirstBinding: FragmentFirstBinding
-    private var fragmentManager = parentFragmentManager
+    private lateinit var edtName : EditText
+    private lateinit var txtCity : TextView
+    private lateinit var btnNext : Button
 
     var city = ""
         set(value) {
             field = value
-            fragmentFirstBinding.txtCity.text = value
+            txtCity.text = value
         }
 
     override fun onCreateView(
@@ -26,16 +26,15 @@ class FragmentFirst : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        fragmentFirstBinding = FragmentFirstBinding.inflate(layoutInflater)
-        attachListeners()
-        return fragmentFirstBinding.root
-    }
+        val fragmentFirstView : View = inflater.inflate(R.layout.fragment_first,null,false)
 
-    fun attachListeners() {
-        //way 1 - direct communication between 2 fragments
-        fragmentFirstBinding.btnNext.setOnClickListener {
-            (fragmentManager.findFragmentById(R.id.fragmentSecond) as FragmentSecond).tName =
-                fragmentFirstBinding.edtName.text.toString()
-        }
+        edtName = fragmentFirstView.findViewById(R.id.edtName)
+        txtCity = fragmentFirstView.findViewById(R.id.txtCity)
+        btnNext = fragmentFirstView.findViewById(R.id.btnNext)
+
+        (parentFragmentManager.findFragmentById(R.id.fragment_second) as FragmentSecond).tName =
+            edtName.text.toString()
+
+        return fragmentFirstView
     }
 }
